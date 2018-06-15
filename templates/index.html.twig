@@ -1,4 +1,53 @@
 {% extends "base.html.twig" %}
 {% block body %}
-    cocktails junge
+    <div class="ui container">
+        <div class="ui segment center">
+            <div class="ui form">
+                <div class="grouped fields">
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" name="pin21" data-pin="21" class="pump-control">
+                            <label>Pump 1</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" name="pin20" data-pin="20" class="pump-control">
+                            <label>Pump 2</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" name="pin26" data-pin="26" class="pump-control">
+                            <label>Pump 3</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" name="pin19" data-pin="19" class="pump-control">
+                            <label>Pump 4</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
+
+{% block javascripts %}
+ {{ parent() }}
+ <script>
+     $(document).ready(() => {
+         $('.pump-control').on('click', (event) => {
+             let on = $(event.target).prop('checked');
+             let pin = $(event.target).data('pin');
+             $.ajax({
+                 url: '/pump/send',
+                 method: "POST",
+                 data: {on: on, pin: pin}
+             });
+         })
+     })
+ </script>
+{% endblock %}
+
