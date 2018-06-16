@@ -6,14 +6,34 @@
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('/jquery/jquery-ui.min.css') }}">
             <link rel="stylesheet" href="{{ asset('/semantic/semantic.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('/select2/select2.min.css') }}">
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <div class="ui left demo vertical inverted sidebar labeled icon menu visible">
+            <a class="item" href="{{ path('index') }}">
+                <i class="home icon"></i>
+                Home
+            </a>
+            <a class="item" href="{{ path('ingredient') }}">
+                <i class="tint layout icon"></i>
+                Ingredients
+            </a>
+            <a class="item" href="{{ path('cocktails') }}">
+                <i class="glass martini icon"></i>
+                Cocktails
+            </a>
+        </div>
+        <div class="ui grid centered">
+            <div class="twelve wide stretched column">
+                {% block body %}{% endblock %}
+            </div>
+        </div>
         {% block javascripts %}
             <script src="{{ asset('/jquery/jquery-3.3.1.min.js') }}"></script>
             <script src="{{ asset('/jquery/jquery-ui.min.js') }}"></script>
             <script src="{{ asset('/semantic/semantic.min.js') }}"></script>
+            <script src="{{ asset('/select2/select2.min.js') }}"></script>
         {% endblock %}
     </body>
 </html>

@@ -1,0 +1,50 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <div class="ui segment center">
+        <div class="ui form">
+            <div class="grouped fields">
+                <div class="field">
+                    <label for="pump1">
+                        Pumpe 1
+                    </label>
+                    <select id="pump1" name="pump1">
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="pump2">
+                        Pumpe 2
+                    </label>
+                    <select id="pump2" name="pump2">
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="pump3">
+                        Pumpe 3
+                    </label>
+                    <select id="pump3" name="pump3">
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="pump4">
+                        Pumpe 4
+                    </label>
+                    <select id="pump4" name="pump4">
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+ {{ parent() }}
+ <script>
+     $('#pump1, #pump2, #pump3, #pump4').select2({
+         ajax: {
+             url: '/data/ingredients.json',
+             dataType: 'json'
+         }
+     });
+ </script>
+{% endblock %}
+

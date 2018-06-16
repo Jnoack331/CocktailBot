@@ -1,0 +1,82 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <div class="ui segment center">
+        <div class="ui items divided">
+            <div class="item">
+                <div class="content">
+                    <a class="header">Cuba Libre</a>
+                    <div class="meta">
+                        <div class="ui label">
+                            Cola
+                        </div>
+                        <div class="ui label">
+                            Weißer Rum
+                        </div>
+                    </div>
+                    <div class="description">
+                        <p></p>
+                    </div>
+                    <div class="extra">
+                        <div class="ui primary button">
+                            Edit
+                            <i class="right chevron icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="content">
+                    <a class="header">Tequila Sunrise</a>
+                    <div class="meta">
+                        <div class="ui label">
+                            Weißer Tequila
+                        </div>
+                        <div class="ui label">
+                            Orangensaft
+                        </div>
+                        <div class="ui label">
+                            Grenadine
+                        </div>
+                    </div>
+                    <div class="description">
+                        <p></p>
+                    </div>
+                    <div class="extra">
+                        <div class="ui primary button">
+                            Edit
+                            <i class="right chevron icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui small modal">
+        <div class="header"></div>
+        <div class="content">
+        </div>
+        <div class="actions">
+            <div class="ui approve green button">Approve</div>
+            <div class="ui cancel red button">Cancel</div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+ {{ parent() }}
+ <script>
+     $(document).ready(() => {
+         $('.item .extra .ui.primary.button').on('click', (event) => {
+             const cocktailName = $(event.target).parents('.content').find('.header').html();
+             const cocktailTags = $(event.target).parents('.content').find('.meta').html();
+
+             $('.ui.small.modal .header').html(cocktailName);
+             $('.ui.small.modal .content').html(cocktailTags);
+             $('.ui.small.modal').modal('show')
+             ;
+         })
+     })
+ </script>
+{% endblock %}
+

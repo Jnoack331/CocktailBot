@@ -1,6 +1,12 @@
 index:
     path: /
     controller: App\Controller\IndexController::index
-trigger:
+trigger_pump:
     path: /pump/send
     controller: App\Controller\IndexController::trigger
+ingredient:
+    path: /ingredients
+    controller: App\Controller\IngredientController::index
+cocktails:
+    path: /cocktails
+    controller: App\Controller\CocktailsController::index
