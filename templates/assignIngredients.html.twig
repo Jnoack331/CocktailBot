@@ -7,28 +7,40 @@
                     <label for="pump1">
                         Pumpe 1
                     </label>
-                    <select id="pump1" name="pump1">
+                    <select id="pump1" name="pump1" class="ui fluid search selection dropdown">
+                        {% for ingredient in ingredients %}
+                            <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="field">
                     <label for="pump2">
                         Pumpe 2
                     </label>
-                    <select id="pump2" name="pump2">
+                    <select id="pump2" name="pump2" class="ui fluid search selection dropdown">
+                        {% for ingredient in ingredients %}
+                            <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="field">
                     <label for="pump3">
                         Pumpe 3
                     </label>
-                    <select id="pump3" name="pump3">
+                    <select id="pump3" name="pump3" class="ui fluid search selection dropdown">
+                        {% for ingredient in ingredients %}
+                            <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="field">
                     <label for="pump4">
                         Pumpe 4
                     </label>
-                    <select id="pump4" name="pump4">
+                    <select id="pump4" name="pump4" class="ui fluid search selection dropdown">
+                        {% for ingredient in ingredients %}
+                            <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>
@@ -39,12 +51,7 @@
 {% block javascripts %}
  {{ parent() }}
  <script>
-     $('#pump1, #pump2, #pump3, #pump4').select2({
-         ajax: {
-             url: '/data/ingredients.json',
-             dataType: 'json'
-         }
-     });
+     $('.dropdown').dropdown();
  </script>
 {% endblock %}
 

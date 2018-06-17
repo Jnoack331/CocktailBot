@@ -8,24 +8,20 @@
 
 namespace App\Controller;
 
+use App\Entity\Ingredient;
 use PiPHP\GPIO\GPIO;
 use PiPHP\GPIO\Pin\PinInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class IngredientController extends Controller
+class PumpPortController extends Controller
 {
     public function index()
     {
         // https://packagist.org/packages/piphp/gpio
-
+        $entityManager = $this->getDoctrine()->getRepository(Ingredient::class);
         return $this->render('assignIngredients.html.twig', [
-            'activePage' => 'ingredients'
+            'ingredients' => $entityManager->findAll()
         ]);
-    }
-
-    public function trigger(Request $request)
-    {
-
     }
 }

@@ -6,7 +6,6 @@
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('/jquery/jquery-ui.min.css') }}">
             <link rel="stylesheet" href="{{ asset('/semantic/semantic.min.css') }}">
-            <link rel="stylesheet" href="{{ asset('/select2/select2.min.css') }}">
         {% endblock %}
     </head>
     <body>
@@ -15,7 +14,11 @@
                 <i class="home icon"></i>
                 Home
             </a>
-            <a class="item" href="{{ path('ingredient') }}">
+            <a class="item" href="{{ path('pump_ports') }}">
+                <i class="object group outline icon"></i>
+                Pump Ports
+            </a>
+            <a class="item" href="{{ path('ingredients') }}">
                 <i class="tint layout icon"></i>
                 Ingredients
             </a>
@@ -33,7 +36,6 @@
             <script src="{{ asset('/jquery/jquery-3.3.1.min.js') }}"></script>
             <script src="{{ asset('/jquery/jquery-ui.min.js') }}"></script>
             <script src="{{ asset('/semantic/semantic.min.js') }}"></script>
-            <script src="{{ asset('/select2/select2.min.js') }}"></script>
         {% endblock %}
     </body>
 </html>

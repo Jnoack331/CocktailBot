@@ -4,9 +4,24 @@ index:
 trigger_pump:
     path: /pump/send
     controller: App\Controller\IndexController::trigger
-ingredient:
-    path: /ingredients
-    controller: App\Controller\IngredientController::index
+pump_ports:
+    path: /ports
+    controller: App\Controller\PumpPortController::index
 cocktails:
     path: /cocktails
     controller: App\Controller\CocktailsController::index
+cocktail_create:
+    path: /cocktail/create
+    controller: App\Controller\CocktailsController::create
+ingredients:
+    path: /ingredients
+    controller: App\Controller\IngredientsController::index
+ingredient_create:
+    path: /ingredient/create
+    controller: App\Controller\IngredientsController::create
+ingredient_remove:
+    path: /ingredient/remove
+    controller: App\Controller\IngredientsController::remove
+ingredients_get:
+    path: /ingredients/get
+    controller: App\Controller\IngredientsController::getIngredients

@@ -18,9 +18,7 @@ class IndexController extends Controller
     public function index()
     {
         // https://packagist.org/packages/piphp/gpio
-        return $this->render('index.html.twig', [
-            'activePage' => 'homepage'
-        ]);
+        return $this->render('index.html.twig');
     }
 
     public function trigger(Request $request)

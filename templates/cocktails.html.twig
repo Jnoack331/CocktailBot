@@ -1,60 +1,70 @@
 {% extends "base.html.twig" %}
 {% block body %}
     <div class="ui segment center">
+        <button class="ui button green" id="new">
+            New
+            <i class="right icon plus"></i>
+        </button>
+    </div>
+    <div class="ui segment center">
         <div class="ui items divided">
-            <div class="item">
-                <div class="content">
-                    <a class="header">Cuba Libre</a>
-                    <div class="meta">
-                        <div class="ui label">
-                            Cola
+            {% for cocktail in cocktails %}
+                <div class="item">
+                    <div class="content">
+                        <a class="header">{{ cocktail.name }}</a>
+                        <div class="meta">
+                            {% for ingredient in cocktail.ingredients %}
+                                <div class="ui label">
+                                    {{ ingredient.name }}
+                                </div>
+                            {% endfor %}
                         </div>
-                        <div class="ui label">
-                            Weißer Rum
+                        <div class="description">
+                            <p></p>
                         </div>
-                    </div>
-                    <div class="description">
-                        <p></p>
-                    </div>
-                    <div class="extra">
-                        <div class="ui primary button">
-                            Edit
-                            <i class="right chevron icon"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <div class="content">
-                    <a class="header">Tequila Sunrise</a>
-                    <div class="meta">
-                        <div class="ui label">
-                            Weißer Tequila
-                        </div>
-                        <div class="ui label">
-                            Orangensaft
-                        </div>
-                        <div class="ui label">
-                            Grenadine
-                        </div>
-                    </div>
-                    <div class="description">
-                        <p></p>
-                    </div>
-                    <div class="extra">
-                        <div class="ui primary button">
-                            Edit
-                            <i class="right chevron icon"></i>
+                        <div class="extra">
+                            <div class="ui primary button">
+                                Edit
+                                <i class="right chevron icon"></i>
+                            </div>
+                            <div class="ui red button">
+                                Remove
+                                <i class="right trash icon"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 
     <div class="ui small modal">
-        <div class="header"></div>
+        <div class="header">New Cocktail</div>
         <div class="content">
+            <div class="ui form">
+                <div class="ui field">
+                    <div class="ui input">
+                        <input type="text" id="name" placeholder="name" class="ui input">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="two fields">
+                        <div class="field">
+                            <select class="dropdown ingredient">
+                                {% for ingredient in ingredients %}
+                                    <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="field">
+                            <input type="number" placeholder="number">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui button positive" id="new_ingredient">
+                new Ingredient
+            </div>
         </div>
         <div class="actions">
             <div class="ui approve green button">Approve</div>
@@ -68,13 +78,55 @@
  <script>
      $(document).ready(() => {
          $('.item .extra .ui.primary.button').on('click', (event) => {
-             const cocktailName = $(event.target).parents('.content').find('.header').html();
-             const cocktailTags = $(event.target).parents('.content').find('.meta').html();
 
-             $('.ui.small.modal .header').html(cocktailName);
-             $('.ui.small.modal .content').html(cocktailTags);
-             $('.ui.small.modal').modal('show')
-             ;
+         });
+
+         function sendCocktail() {
+             let ingredientsFields = $('.modal select');
+             const name = $('.modal #name').val();
+             const ingredients = [];
+             ingredientsFields.each((index, value) => {
+                 console.log(value);
+                 ingredients.push($(value).val());
+             });
+
+             $.ajax({
+                 method: "POST",
+                 url: "/cocktail/create",
+                 data: {ingredients: ingredients, name: name}
+             })
+         }
+
+         $('#new').on('click', () => {
+             $('.ui.small.modal')
+                 .modal({
+                     onApprove: function () {
+                         sendCocktail()
+                     }
+                 })
+                 .modal('show')
+         });
+
+
+         $('.dropdown').dropdown();
+
+         $('#new_ingredient').on('click', (event) => {
+             $(event.target).parents('.content').find('.form').append('' +
+                 '<div class="field">\n' +
+                 '                    <div class="two fields">\n' +
+                 '                        <div class="field">\n' +
+                 '                            <select>\n' +
+                 '                                {% for ingredient in ingredients %}\n' +
+                 '                                    <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>\n' +
+                 '                                {% endfor %}\n' +
+                 '                            </select>\n' +
+                 '                        </div>\n' +
+                 '                        <div class="field">\n' +
+                 '                            <input type="number" placeholder="number">\n' +
+                 '                        </div>\n' +
+                 '                    </div>\n' +
+                 '                </div>');
+             $('.dropdown').dropdown();
          })
      })
  </script>

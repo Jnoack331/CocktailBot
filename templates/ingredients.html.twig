@@ -1,0 +1,92 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <div class="ui segment center">
+        <button class="ui button green" id="new">
+            New
+            <i class="right icon plus"></i>
+        </button>
+    </div>
+    <div class="ui segment center">
+        <div class="ui items divided">
+            {% for ingredient in ingredients %}
+                <div class="item" data-id="{{ ingredient.id }}">
+                    <div class="content">
+                        <a class="header">{{ ingredient.name }}</a>
+                        <div class="extra">
+                            <div class="ui primary button">
+                                Edit
+                                <i class="right chevron icon"></i>
+                            </div>
+                            <div class="ui red button">
+                                Remove
+                                <i class="right trash icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="ui small modal">
+        <div class="header">New Ingredient</div>
+        <div class="content">
+            <div class="ui form">
+                <div class="ui input">
+                    <input type="text" id="name" placeholder="name" class="ui input">
+                </div>
+                <div class="ui input">
+                    <input type="text" id="time" placeholder="time" class="ui input">
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui approve green button">Approve</div>
+            <div class="ui cancel red button">Cancel</div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+ {{ parent() }}
+ <script>
+     $(document).ready(() => {
+         $('#new').on('click', () => {
+             $('.ui.small.modal')
+                 .modal({
+                     onApprove : function(event) {
+                         const name = $('.ui.small.modal').find('#name').val();
+                         const time = $('.ui.small.modal').find('#time').val();
+                         sendIngredient(name, time)
+                     }
+                 })
+                 .modal("show")
+         });
+         $('.ui.small.modal').on('onapprove', (event) => {
+             console.log(event)
+         });
+
+         $('.item .ui.red.button').on('click', (event) => {
+             const id = $(event.target).parents('.item').data('id');
+             $.ajax({
+                 method: "POST",
+                 url: '/ingredient/remove',
+                 data: {id: id}
+             }).done(() => {
+                 window.location.reload();
+             })
+         });
+
+         function sendIngredient(name, time) {
+             $.ajax({
+                 method: "POST",
+                 url: "/ingredient/create",
+                 data: {name: name, time: time}
+             }).done(() => {
+                 window.location.reload();
+             })
+         }
+     })
+ </script>
+{% endblock %}
+
