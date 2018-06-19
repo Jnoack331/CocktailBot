@@ -33,6 +33,11 @@ class Ingredient
      */
     private $cocktails;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Port", mappedBy="Ingredient", cascade={"persist", "remove"})
+     */
+    private $port;
+
     public function __construct()
     {
         $this->cocktails = new ArrayCollection();
@@ -90,6 +95,24 @@ class Ingredient
         if ($this->cocktails->contains($cocktail)) {
             $this->cocktails->removeElement($cocktail);
             $cocktail->removeIngredient($this);
+        }
+
+        return $this;
+    }
+
+    public function getPort(): ?Port
+    {
+        return $this->port;
+    }
+
+    public function setPort(?Port $port): self
+    {
+        $this->port = $port;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newIngredient = $port === null ? null : $this;
+        if ($newIngredient !== $port->getIngredient()) {
+            $port->setIngredient($newIngredient);
         }
 
         return $this;
