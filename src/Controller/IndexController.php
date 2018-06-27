@@ -14,6 +14,7 @@ use PiPHP\GPIO\GPIO;
 use PiPHP\GPIO\Pin\PinInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\VarDumper\VarDumper;
 
 class IndexController extends Controller
 {
@@ -52,7 +53,7 @@ class IndexController extends Controller
         foreach ($cocktail->getIngredientAmount() as $ingredientValue) {
             /** @var Port $port */
             foreach ($ports as $port) {
-                if ($ingredientValue->getIngredient() === $port->getIngredient()) {
+                if ($ingredientValue->getIngredient()->getId() === $port->getIngredient()->getId()) {
                     $hwPort = $gpio->getOutputPin($port->getPin());
                     $hwPort->export();
                     $hwPort->setValue(PinInterface::VALUE_LOW);
@@ -62,6 +63,6 @@ class IndexController extends Controller
                 }
             }
         }
-
+        return $this->json([]);
     }
 }
