@@ -1,12 +1,21 @@
 index:
     path: /
     controller: App\Controller\IndexController::index
+cocktail_make:
+    path: /cocktail/make
+    controller: App\Controller\IndexController::make
 trigger_pump:
     path: /pump/send
     controller: App\Controller\IndexController::trigger
 pump_ports:
     path: /ports
     controller: App\Controller\PumpPortController::index
+create_port:
+    path: /port/create
+    controller: App\Controller\PumpPortController::create
+remove_port:
+    path: /port/remove
+    controller: App\Controller\PumpPortController::remove
 cocktails:
     path: /cocktails
     controller: App\Controller\CocktailsController::index

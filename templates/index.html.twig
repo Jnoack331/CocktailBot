@@ -1,5 +1,39 @@
 {% extends "base.html.twig" %}
 {% block body %}
+    <div class="ui segment center">
+        <button class="ui button green" id="new">
+            New
+            <i class="right icon plus"></i>
+        </button>
+    </div>
+    <div class="ui segment center">
+        <div class="ui items divided">
+            {% for cocktail in cocktails %}
+                <div class="item" data-cocktail="{{ cocktail.id }}">
+                    <div class="content">
+                        <a class="header">{{ cocktail.name }}</a>
+                        <div class="meta">
+                            {% for ingredient in cocktail.ingredients %}
+                                <div class="ui label">
+                                    {{ ingredient.name }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="description">
+                            <p></p>
+                        </div>
+                        <div class="extra">
+                            <div class="ui primary button make">
+                                Make
+                                <i class="right chevron icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
     <div class="ui container">
         <div class="ui segment center">
             <div class="ui form">
@@ -45,6 +79,15 @@
                  url: '/pump/send',
                  method: "POST",
                  data: {on: on, pin: pin}
+             });
+         });
+
+         $('.primary.button.make').on('click', (event) => {
+             const cocktail = $(event.target).parents('.item').data('cocktail');
+             $.ajax({
+                 url: '/cocktail/make',
+                 method: "POST",
+                 data: {id: cocktail}
              });
          })
      })

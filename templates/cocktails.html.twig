@@ -57,7 +57,7 @@
                             </select>
                         </div>
                         <div class="field">
-                            <input type="number" placeholder="number">
+                            <input type="number" class="amount" placeholder="number">
                         </div>
                     </div>
                 </div>
@@ -87,13 +87,16 @@
              const ingredients = [];
              ingredientsFields.each((index, value) => {
                  console.log(value);
-                 ingredients.push($(value).val());
+                 const amount = $(value).parents('.field').parents('.field').val();
+                 ingredients.push({ingredient: $(value).val(), amount: amount});
              });
 
              $.ajax({
                  method: "POST",
                  url: "/cocktail/create",
                  data: {ingredients: ingredients, name: name}
+             }).done(() => {
+                 //location.reload();
              })
          }
 

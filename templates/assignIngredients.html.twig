@@ -1,43 +1,52 @@
 {% extends "base.html.twig" %}
 {% block body %}
     <div class="ui segment center">
-        <div class="ui form">
-            <div class="grouped fields">
-                <div class="field">
-                    <label for="pump1">
-                        Pumpe 1
-                    </label>
-                    <select id="pump1" name="pump1" class="ui fluid search selection dropdown">
-                        {% for ingredient in ingredients %}
-                            <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
-                        {% endfor %}
-                    </select>
+        <button class="ui button green" id="new">
+            New
+            <i class="right icon plus"></i>
+        </button>
+    </div>
+    <div class="ui segment center">
+        <div class="ui items divided">
+            {% for port in ports %}
+                <div class="item" data-id="{{ port.id }}">
+                    <div class="content">
+                        <a class="header">Port {{ port.id }}</a>
+                        <div class="meta">
+                            <div class="ui label">
+                                {{ port.ingredient.name }}
+                            </div>
+                        </div>
+                        <div class="description">
+                            <p></p>
+                        </div>
+                        <div class="extra">
+                            <div class="ui primary button">
+                                Edit
+                                <i class="right chevron icon"></i>
+                            </div>
+                            <div class="ui red button">
+                                Remove
+                                <i class="right trash icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="ui small modal">
+        <div class="header">New Port</div>
+        <div class="content">
+            <div class="ui form">
+                <div class="ui field">
+                    <div class="ui input">
+                        <input type="text" id="port" placeholder="port" class="ui input">
+                    </div>
                 </div>
                 <div class="field">
-                    <label for="pump2">
-                        Pumpe 2
-                    </label>
-                    <select id="pump2" name="pump2" class="ui fluid search selection dropdown">
-                        {% for ingredient in ingredients %}
-                            <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="field">
-                    <label for="pump3">
-                        Pumpe 3
-                    </label>
-                    <select id="pump3" name="pump3" class="ui fluid search selection dropdown">
-                        {% for ingredient in ingredients %}
-                            <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="field">
-                    <label for="pump4">
-                        Pumpe 4
-                    </label>
-                    <select id="pump4" name="pump4" class="ui fluid search selection dropdown">
+                    <select class="dropdown ingredient">
                         {% for ingredient in ingredients %}
                             <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
                         {% endfor %}
@@ -45,13 +54,58 @@
                 </div>
             </div>
         </div>
+        <div class="actions">
+            <div class="ui approve green button">Approve</div>
+            <div class="ui cancel red button">Cancel</div>
+        </div>
     </div>
 {% endblock %}
 
 {% block javascripts %}
  {{ parent() }}
  <script>
-     $('.dropdown').dropdown();
+     $(document).ready(() => {
+         $('.item .extra .ui.primary.button').on('click', (event) => {
+
+         });
+
+         function sendPort() {
+             let ingredient = $('.modal select').val();
+             let pin = $('.modal #port').val();
+
+             $.ajax({
+                 method: "POST",
+                 url: "/port/create",
+                 data: {ingredient: ingredient, pin: pin}
+             }).done(() => {
+                 location.reload();
+             })
+         }
+
+         $('#new').on('click', () => {
+             $('.ui.small.modal')
+                 .modal({
+                     onApprove: function () {
+                         sendPort()
+                     }
+                 })
+                 .modal('show')
+         });
+
+         $('.item .ui.red.button').on('click', (event) => {
+             const id = $(event.target).parents('.item').data('id');
+             $.ajax({
+                 method: "POST",
+                 url: '/port/remove',
+                 data: {id: id}
+             }).done(() => {
+                 location.reload();
+             })
+         });
+
+
+         $('.dropdown').dropdown();
+     })
  </script>
 {% endblock %}
 

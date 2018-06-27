@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\Cocktail;
 use App\Entity\Ingredient;
+use App\Entity\IngredientAmount;
 use PiPHP\GPIO\GPIO;
 use PiPHP\GPIO\Pin\PinInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -36,12 +37,20 @@ class CocktailsController extends Controller
         $cocktail->setName($request->get('name'));
         $repository = $ingredientEntity = $this->getDoctrine()->getRepository(Ingredient::class);
         $manager = $ingredientEntity = $this->getDoctrine()->getManager();
+
         if (!is_array($ingredients)) {
             $ingredients = [$ingredients];
         }
 
         foreach ($ingredients as $ingredient) {
-            $cocktail->addIngredient($repository->find($ingredient));
+            $ingredientAmount = new IngredientAmount();
+            $ingredientAmount->setIngredient($repository->find((int)$ingredient['ingredient']));
+            $ingredientAmount->setAmount((int)$ingredient['amount']);
+            $ingredientAmount->setCocktail($cocktail);
+            $manager->persist($ingredientAmount);
+
+            $cocktail->addIngredientAmount($ingredientAmount);
+            $cocktail->addIngredient($repository->find((int)$ingredient['ingredient']));
         }
 
         $manager->persist($cocktail);

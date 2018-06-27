@@ -28,9 +28,15 @@ class Cocktail
      */
     private $ingredients;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\IngredientAmount", mappedBy="cocktail", orphanRemoval=true)
+     */
+    private $ingredientAmount;
+
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
+        $this->ingredientAmount = new ArrayCollection();
     }
 
     public function getId()
@@ -71,6 +77,37 @@ class Cocktail
     {
         if ($this->ingredients->contains($ingredient)) {
             $this->ingredients->removeElement($ingredient);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|IngredientAmount[]
+     */
+    public function getIngredientAmount(): Collection
+    {
+        return $this->ingredientAmount;
+    }
+
+    public function addIngredientAmount(IngredientAmount $ingredientAmount): self
+    {
+        if (!$this->ingredientAmount->contains($ingredientAmount)) {
+            $this->ingredientAmount[] = $ingredientAmount;
+            $ingredientAmount->setCocktail($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIngredientAmount(IngredientAmount $ingredientAmount): self
+    {
+        if ($this->ingredientAmount->contains($ingredientAmount)) {
+            $this->ingredientAmount->removeElement($ingredientAmount);
+            // set the owning side to null (unless already changed)
+            if ($ingredientAmount->getCocktail() === $this) {
+                $ingredientAmount->setCocktail(null);
+            }
         }
 
         return $this;
