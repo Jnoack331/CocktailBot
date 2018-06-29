@@ -47,7 +47,7 @@
                         <input type="text" id="name" placeholder="name" class="ui input">
                     </div>
                 </div>
-                <div class="field">
+                <div class="field holder">
                     <div class="two fields">
                         <div class="field">
                             <select class="dropdown ingredient">
@@ -87,7 +87,7 @@
              const ingredients = [];
              ingredientsFields.each((index, value) => {
                  console.log(value);
-                 const amount = $(value).parents('.field').parents('.field').val();
+                 const amount = $(value).parents('.holder').find('.amount').val();
                  ingredients.push({ingredient: $(value).val(), amount: amount});
              });
 
